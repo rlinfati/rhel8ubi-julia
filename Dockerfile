@@ -22,7 +22,7 @@ RUN curl --remote-name https://repo.anaconda.com/miniconda/Miniconda3-latest-Lin
     conda clean --all --yes
 
 ENTRYPOINT ["tini", "-g", "--"]
-CMD ["jupyter", "notebook", "--ip=0.0.0.0"]
+CMD ["jupyter", "lab", "--ip=0.0.0.0"]
 EXPOSE 8888
 
 # Julia config
@@ -37,7 +37,7 @@ RUN mkdir /opt/julia-${JULIA_VERSION} && \
     tar xzf julia-${JULIA_VERSION}-latest-linux-x86_64.tar.gz -C /opt/julia-${JULIA_VERSION} --strip-components=1 && \
     rm julia-${JULIA_VERSION}-latest-linux-x86_64.tar.gz && \
     ln --symbolic /opt/julia-${JULIA_VERSION}/bin/julia /usr/local/bin/julia && \
-    julia -e "using Pkg; Pkg.add(\"IJulia\"); using IJulia; IJulia.installkernel(\"Julia Threads:4\", \"--threads 4\");"
+    julia -e "using Pkg; Pkg.add(\"IJulia\");"
 
 # AMPL demo Install
 RUN mkdir /opt/ampl.linux64 && \
