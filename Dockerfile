@@ -17,7 +17,7 @@ VOLUME /home/luser/backup
 # Jupyter Notebook and Hub
 RUN curl --remote-name https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
     bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda && \
-    conda install --yes notebook jupyterhub tini && \
+    conda install --yes notebook jupyterlab tini && \
     rm Miniconda3-latest-Linux-x86_64.sh && \
     conda clean --all --yes
 
@@ -37,7 +37,7 @@ RUN mkdir /opt/julia-${JULIA_VERSION} && \
     tar xzf julia-${JULIA_VERSION}-latest-linux-x86_64.tar.gz -C /opt/julia-${JULIA_VERSION} --strip-components=1 && \
     rm julia-${JULIA_VERSION}-latest-linux-x86_64.tar.gz && \
     ln --symbolic /opt/julia-${JULIA_VERSION}/bin/julia /usr/local/bin/julia && \
-    julia -e "using Pkg; Pkg.add(\"IJulia\");"
+    julia -e "using Pkg; Pkg.add(\"IJulia\"); using IJulia; IJulia.installkernel(\"Julia Threads:4\", \"--threads 4\");"
 
 # AMPL demo Install
 RUN mkdir /opt/ampl.linux64 && \
@@ -50,4 +50,4 @@ RUN mkdir /opt/ampl.linux64 && \
     echo TOKENSERVER=token.menoscero.com > /opt/gurobi/gurobi.lic
 
 # Julia JuMP
-RUN julia -e "using Pkg; Pkg.add(\"Plots\"); Pkg.add(\"JuMP\"); Pkg.add(\"GLPK\"); Pkg.add(\"CPLEX\"); Pkg.add(\"Gurobi\");"
+RUN julia -e "using Pkg; Pkg.add(\"Plots\"); Pkg.add(\"JuMP\"); Pkg.add(\"GLPK\"); Pkg.add(\"SCIP\"); Pkg.add(\"CPLEX\"); Pkg.add(\"Gurobi\");"
